@@ -28,6 +28,11 @@ public class AvlNode<K, V> {
     private Integer balanceFactor;
 
 
+    public AvlNode(K key, V value) {
+        this.key = key;
+        this.value = value;
+    }
+
     /**
      * Verifies if the node has the indicated key
      *
@@ -76,7 +81,7 @@ public class AvlNode<K, V> {
      * @param <V>  The type of the value in the node.
      * @return The maximum depth of the node.
      */
-    public static <K, V> int getMaxDepth(AvlNode<K, V> node) {
+    private static <K, V> int getMaxDepth(AvlNode<K, V> node) {
         return node == null ? 0 : Math.max(getMaxDepth(node.getLeftNode()), getMaxDepth(node.getRightNode())) + 1;
     }
 
@@ -85,7 +90,7 @@ public class AvlNode<K, V> {
      * <p>
      * The balance factor of a node is the difference between the heights of the left and right subtrees of the node
      */
-    public void updateBF() {
+    private void updateBalanceFactor() {
         this.balanceFactor = getMaxDepth(this.leftNode) - getMaxDepth(this.rightNode);
     }
 
@@ -96,13 +101,20 @@ public class AvlNode<K, V> {
      * The balance factor of a node is the difference between the heights of the left and right subtrees of the node.
      * This difference must be between -1 and 1 (both inclusive), to be considered balanced.
      */
-    public boolean hasCorrectBF() {
+    public boolean hasCorrectBalanceFactor() {
         return MIN_BALANCE_FACTOR < this.balanceFactor && this.balanceFactor < MAX_BALANCE_FACTOR;
+    }
+
+
+    public void updateBalanceFactorAndHeight() {
+        updateBalanceFactor();
+        updateHeight();
     }
 
 
     /**
      * Checks if the node has a left child
+     *
      * @return true If the node has a left child, false otherwise
      */
     public boolean hasLeftChild() {
@@ -112,6 +124,7 @@ public class AvlNode<K, V> {
 
     /**
      * Checks if the node has a right child
+     *
      * @return true If the node has a right child, false otherwise
      */
     public boolean hasRightChild() {
@@ -120,6 +133,7 @@ public class AvlNode<K, V> {
 
     /**
      * Checks if the node has both, left and right, childs
+     *
      * @return true If the node has a left child and a right child, false otherwise
      */
     public boolean hasBothChilds() {
@@ -127,8 +141,35 @@ public class AvlNode<K, V> {
     }
 
 
+
+    /**
+     * Checks if the node is left child of his parent
+     *
+     * @return true If the node left child, false otherwise
+     */
+    public boolean isLeftChild() {
+        return this.parent.leftNode.equals(this);
+    }
+
+
+
+    /**
+     * Checks if the node is right child of his parent
+     *
+     * @return true If the node right child, false otherwise
+     */
+    public boolean isRightChild() {
+        return this.parent.rightNode.equals(this);
+    }
+
+    public boolean hasParent() {
+        return this.parent != null;
+    }
+
     @Override
     public String toString() {
         return "Key " + key + ", value " + value;
     }
+
+
 }
