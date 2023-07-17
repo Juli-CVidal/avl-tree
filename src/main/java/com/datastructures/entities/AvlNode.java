@@ -106,9 +106,21 @@ public class AvlNode<K, V> {
     }
 
 
+    /**
+     * Updates the balance factor and the height of the node.
+     */
     public void updateBalanceFactorAndHeight() {
         updateBalanceFactor();
         updateHeight();
+    }
+
+    /**
+     * Checks if the node has no childs.
+     *
+     * @return true if the node has no childs, false otherwise.
+     */
+    public boolean isLeaf() {
+        return this.leftNode == null && this.rightNode == null;
     }
 
 
@@ -141,16 +153,15 @@ public class AvlNode<K, V> {
     }
 
 
-
     /**
      * Checks if the node is left child of his parent
      *
      * @return true If the node left child, false otherwise
      */
     public boolean isLeftChild() {
-        return this.parent.leftNode.equals(this);
+        AvlNode<K, V> parent = this.parent;
+        return parent.leftNode != null && parent.leftNode.equals(this);
     }
-
 
 
     /**
@@ -159,7 +170,8 @@ public class AvlNode<K, V> {
      * @return true If the node right child, false otherwise
      */
     public boolean isRightChild() {
-        return this.parent.rightNode.equals(this);
+        AvlNode<K, V> parent = this.parent;
+        return parent.rightNode != null && parent.rightNode.equals(this);
     }
 
     public boolean hasParent() {
